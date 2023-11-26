@@ -21,6 +21,6 @@ func TestSignRequest(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, d)
 
-	sign := c.signRequest(c.PaymentApiKey, d)
+	sign := c.signRequest(c.paymentApiKey, d)
 	require.Equal(t, "0f66e9e002a45d4285cc77a227dadfeb", sign)
 }

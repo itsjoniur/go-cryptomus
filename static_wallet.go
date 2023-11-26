@@ -41,16 +41,16 @@ func (c *Cryptomus) CreateStaticWallet(staticWalletReq *StaticWalletRequest) (*S
 		return nil, err
 	}
 
-	sign := c.signRequest(c.PaymentApiKey, payload)
+	sign := c.signRequest(c.paymentApiKey, payload)
 	req, err := http.NewRequest("POST", APIURL+CreateStaticWalletEndpoint, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("merchant", c.Merchant)
+	req.Header.Set("merchant", c.merchant)
 	req.Header.Set("sign", sign)
-	res, err := c.Client.Do(req)
+	res, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
