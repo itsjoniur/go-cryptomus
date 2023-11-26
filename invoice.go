@@ -80,7 +80,7 @@ func (c *Cryptomus) CreateInvoice(invoiceReq *InvoiceRequest) (*InvoiceResponse,
 		return nil, err
 	}
 
-	sign := c.SignRequest(c.PaymentApiKey, payload)
+	sign := c.signRequest(c.PaymentApiKey, payload)
 	req, err := http.NewRequest("POST", APIURL+CreateInvoiceEndpoit, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
