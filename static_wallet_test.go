@@ -8,7 +8,7 @@ import (
 
 func TestCreateStaticWallet(t *testing.T) {
 	staticWalletReq := &StaticWalletRequest{
-		Currency: "USD",
+		Currency: "TRX",
 		Network:  "tron",
 		OrderId:  "xxx",
 		StaticWalletRequestOptions: &StaticWalletRequestOptions{
