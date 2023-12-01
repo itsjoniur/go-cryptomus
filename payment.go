@@ -26,7 +26,7 @@ type InvoiceRequestOptions struct {
 	UrlSuccess             string `json:"url_success,omitempty"`
 	UrlCallback            string `json:"url_callback,omitempty"`
 	IsPaymentMultiple      bool   `json:"is_payment_multiple,omitempty"`
-	Lifetime               uint8  `json:"lifetime,omitempty"`
+	Lifetime               uint16  `json:"lifetime,omitempty"`
 	ToCurrency             string `json:"to_currency,omitempty"`
 	Subtract               uint8  `json:"subtract,omitempty"`
 	AccuarcyPaymentPercent uint8  `json:"accuarcy_payment_percent,omitempty"`
@@ -96,11 +96,11 @@ type PaymentHistoryResponse struct {
 }
 
 type PaymentHistoryPaginate struct {
-	Count          int8   `json:"count"`
+	Count          int16   `json:"count"`
 	HasPages       bool   `json:"hasPages"`
 	NextCursor     string `json:"nextCursor,omitempty"`
 	PreviousCursor string `json:"previousCursor,omitempty"`
-	PerPage        int8   `json:"perPage"`
+	PerPage        int16   `json:"perPage"`
 }
 
 type paymentHistoryRawResponse struct {
