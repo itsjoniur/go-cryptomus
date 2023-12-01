@@ -21,28 +21,27 @@ type InvoiceRequest struct {
 }
 
 type InvoiceRequestOptions struct {
-	Network                string `json:"network,omitempty"`
-	UrlReturn              string `json:"url_return,omitempty"`
-	UrlSuccess             string `json:"url_success,omitempty"`
-	UrlCallback            string `json:"url_callback,omitempty"`
-	IsPaymentMultiple      bool   `json:"is_payment_multiple,omitempty"`
-	Lifetime               uint16  `json:"lifetime,omitempty"`
-	ToCurrency             string `json:"to_currency,omitempty"`
-	Subtract               uint8  `json:"subtract,omitempty"`
-	AccuarcyPaymentPercent uint8  `json:"accuarcy_payment_percent,omitempty"`
-	AdditionalData         string `json:"additional_data,omitempty"`
-	Currencies             []struct {
-		Currency string `json:"currency"`
-		Network  string `json:"network,omitempty"`
-	} `json:"currencies,omitempty"`
-	ExceptCurrencies []struct {
-		Currency string `json:"currency"`
-		Network  string `json:"network,omitempty"`
-	} `json:"except_currencies,omitempty"`
-	CourseSource     string `json:"course_source,omitempty"`
-	FromReferralCode string `json:"from_referral_code,omitempty"`
-	DiscountPercent  int8   `json:"discount_percent,omitempty"`
-	IsRefresh        bool   `json:"is_refresh,omitempty"`
+	Network                string     `json:"network,omitempty"`
+	UrlReturn              string     `json:"url_return,omitempty"`
+	UrlSuccess             string     `json:"url_success,omitempty"`
+	UrlCallback            string     `json:"url_callback,omitempty"`
+	IsPaymentMultiple      bool       `json:"is_payment_multiple,omitempty"`
+	Lifetime               uint16     `json:"lifetime,omitempty"`
+	ToCurrency             string     `json:"to_currency,omitempty"`
+	Subtract               uint8      `json:"subtract,omitempty"`
+	AccuarcyPaymentPercent uint8      `json:"accuarcy_payment_percent,omitempty"`
+	AdditionalData         string     `json:"additional_data,omitempty"`
+	Currencies             []Currency `json:"currencies,omitempty"`
+	ExceptCurrencies       []Currency `json:"except_currencies,omitempty"`
+	CourseSource           string     `json:"course_source,omitempty"`
+	FromReferralCode       string     `json:"from_referral_code,omitempty"`
+	DiscountPercent        int8       `json:"discount_percent,omitempty"`
+	IsRefresh              bool       `json:"is_refresh,omitempty"`
+}
+
+type Currency struct {
+	Currency string `json:"currency"`
+	Network string `json:"network,omitempty"`
 }
 
 type Payment struct {
