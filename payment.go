@@ -52,11 +52,11 @@ type Payment struct {
 	PaymentAmountUSD        string    `json:"payment_amount_usd,omitempty"`
 	PayerAmount             string    `json:"payer_amount,omitempty"`
 	PayerAmountExchangeRate string    `json:"payer_amount_exchange_rate,omitempty"`
-	DiscountPercent         string    `json:"discount_percent,omitempty"`
+	DiscountPercent         int8    `json:"discount_percent,omitempty"`
 	Discount                string    `json:"discount,omitempty"`
 	PayerCurrency           string    `json:"payer_currency,omitempty"`
 	Currency                string    `json:"currency"`
-	MerchantAmount          uint32    `json:"merchant_amount,omitempty"`
+	MerchantAmount          string    `json:"merchant_amount,omitempty"`
 	Network                 string    `json:"network,omitempty"`
 	Address                 string    `json:"address,omitempty"`
 	From                    string    `json:"from,omitempty"`
