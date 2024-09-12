@@ -1,17 +1,18 @@
-package gocryptomus
+package tests
 
 import (
+	"github.com/itsjoniur/go-cryptomus"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestCreateStaticWallet(t *testing.T) {
-	staticWalletReq := &StaticWalletRequest{
+	staticWalletReq := &gocryptomus.StaticWalletRequest{
 		Currency: "TRX",
 		Network:  "tron",
 		OrderId:  "xxx",
-		StaticWalletRequestOptions: &StaticWalletRequestOptions{
+		StaticWalletRequestOptions: &gocryptomus.StaticWalletRequestOptions{
 			UrlCallback: "https://example.com/cryptomus/callback",
 		},
 	}

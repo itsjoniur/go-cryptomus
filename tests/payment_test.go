@@ -1,18 +1,19 @@
-package gocryptomus
+package tests
 
 import (
+	"github.com/itsjoniur/go-cryptomus"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
-func createTestInvoice(t *testing.T) *Payment {
-	invoiceReq := &InvoiceRequest{
+func createTestInvoice(t *testing.T) *gocryptomus.Payment {
+	invoiceReq := &gocryptomus.InvoiceRequest{
 		Amount:   "10",
 		Currency: "USD",
 		OrderId:  "xxy",
-		InvoiceRequestOptions: &InvoiceRequestOptions{
+		InvoiceRequestOptions: &gocryptomus.InvoiceRequestOptions{
 			Network:     "tron",
 			UrlCallback: "https://example.com/cryptomus/callback",
 		},
@@ -37,7 +38,7 @@ func TestGenerateInvoiceQRCode(t *testing.T) {
 
 func TestGetPaymentInfo(t *testing.T) {
 	invoice := createTestInvoice(t)
-	payment, err := TestCryptomus.GetPaymentInfo(&PaymentInfoRequest{PaymentUUID: invoice.UUID})
+	payment, err := TestCryptomus.GetPaymentInfo(&gocryptomus.PaymentInfoRequest{PaymentUUID: invoice.UUID})
 	require.NoError(t, err)
 	require.NotEmpty(t, payment)
 }
