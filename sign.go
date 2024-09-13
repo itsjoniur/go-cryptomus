@@ -1,4 +1,4 @@
-package gocryptomus
+package cryptomus
 
 import (
 	"crypto/md5"
