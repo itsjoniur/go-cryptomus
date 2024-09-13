@@ -1,4 +1,4 @@
-package gocryptomus
+package cryptomus
 
 import (
 	"encoding/json"
@@ -41,7 +41,7 @@ type InvoiceRequestOptions struct {
 
 type Currency struct {
 	Currency string `json:"currency"`
-	Network string `json:"network,omitempty"`
+	Network  string `json:"network,omitempty"`
 }
 
 type Payment struct {
@@ -52,7 +52,7 @@ type Payment struct {
 	PaymentAmountUSD        string    `json:"payment_amount_usd,omitempty"`
 	PayerAmount             string    `json:"payer_amount,omitempty"`
 	PayerAmountExchangeRate string    `json:"payer_amount_exchange_rate,omitempty"`
-	DiscountPercent         int8    `json:"discount_percent,omitempty"`
+	DiscountPercent         int8      `json:"discount_percent,omitempty"`
 	Discount                string    `json:"discount,omitempty"`
 	PayerCurrency           string    `json:"payer_currency,omitempty"`
 	Currency                string    `json:"currency"`
@@ -95,11 +95,11 @@ type PaymentHistoryResponse struct {
 }
 
 type PaymentHistoryPaginate struct {
-	Count          int16   `json:"count"`
+	Count          int16  `json:"count"`
 	HasPages       bool   `json:"hasPages"`
 	NextCursor     string `json:"nextCursor,omitempty"`
 	PreviousCursor string `json:"previousCursor,omitempty"`
-	PerPage        int16   `json:"perPage"`
+	PerPage        int16  `json:"perPage"`
 }
 
 type paymentHistoryRawResponse struct {

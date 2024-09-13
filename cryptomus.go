@@ -1,4 +1,4 @@
-package gocryptomus
+package cryptomus
 
 import (
 	"bytes"
@@ -31,7 +31,7 @@ func (c *Cryptomus) fetch(method string, endpoint string, payload any) (*http.Re
 	}
 
 	sign := c.signRequest(c.paymentApiKey, body)
-	req, err := http.NewRequest("POST", APIURL+endpoint, bytes.NewBuffer(body))
+	req, err := http.NewRequest(method, APIURL+endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
