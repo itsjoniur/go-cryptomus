@@ -1,6 +1,6 @@
 # Cryptomus API Go Wrapper
 
-This repository contains a Go wrapper for the Cryptomus API, a crypto payment gateway. This wrapper simplifies the process of integrating Cryptomus functionality into your Go projects.
+This repository contains an **unofficial Go wrapper** for the Cryptomus API, a crypto payment gateway. This wrapper simplifies the process of integrating Cryptomus functionality into your Go projects.
 
 ## Features
 
@@ -62,14 +62,6 @@ This wrapper currently supports the following Cryptomus API functionalities:
 - Refund operations
 - Resending webhook requests
 
-## Configuration
-
-The wrapper can be configured with the following options:
-
-- Merchant ID (required)
-- Payment API Key (required)
-- Payout API Key (optional)
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -77,11 +69,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Disclaimer
-
-This is an unofficial wrapper for the Cryptomus API. It is not affiliated with or endorsed by Cryptomus.
-
-## Support
-
-If you encounter any problems or have any questions, please open an issue in this repository.
