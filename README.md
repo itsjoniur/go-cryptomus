@@ -9,6 +9,7 @@ This repository contains an **unofficial Go wrapper** for the Cryptomus API, a c
 - Handles static wallet functionalities
 - Supports refund operations
 - Supports resending and testing webhook requests
+- Supports verifying signature
 - Provides strongly typed responses
 
 ## Installation
