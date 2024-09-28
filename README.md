@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-    httpClient := http.Client{}
+    httpClient := http.DefaultClient
     client := cryptomus.New(httpClient, "your-merchant-id", "your-payment-api-key", "your-payout-api-key")
     
     // Create an invoice
