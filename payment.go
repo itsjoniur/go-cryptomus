@@ -11,6 +11,7 @@ const (
 	generateInvoiceQRCodeEndpoint = "/payment/qr"
 	paymentInfoEndpoint           = "/payment/info"
 	paymentHistoryEndpoint        = "/payment/list"
+	paymentServicesListEndpoint   = "/payment/services"
 )
 
 type InvoiceRequest struct {
@@ -108,6 +109,29 @@ type paymentHistoryRawResponse struct {
 	Paginate *PaymentHistoryPaginate `json:"paginate"`
 }
 
+type PaymentService struct {
+	Network     string                   `json:"network"`
+	Currency    string                   `json:"currency"`
+	IsAvailable bool                     `json:"isAvailable"`
+	Limit       *PaymentServiceLimit     `json:"limit"`
+	Commision   *PaymentServiceCommision `json:"commision"`
+}
+
+type PaymentServiceLimit struct {
+	MinAmount string `json:"minAmount"`
+	MaxAmount string `json:"maxAmount"`
+}
+
+type PaymentServiceCommision struct {
+	FeeAmount string `json:"feeAmount"`
+	Percent   string `json:"percent"`
+}
+
+type paymentServiceListRawResponse struct {
+	Result []*PaymentService `json:"result"`
+	State  int8              `json:"state"`
+}
+
 func (c *Cryptomus) CreateInvoice(invoiceReq *InvoiceRequest) (*Payment, error) {
 	res, err := c.fetch("POST", createInvoiceEndpoit, invoiceReq)
 	if err != nil {
@@ -181,4 +205,20 @@ func (c *Cryptomus) GetPaymentHistory(dateFrom, dateTo time.Time) (*PaymentHisto
 		Paginate: response.Paginate,
 	}
 	return paymentHistory, nil
+}
+
+func (c *Cryptomus) GetPaymentServicesList() ([]*PaymentService, error) {
+	payload := make(map[string]any)
+	res, err := c.fetch("POST", paymentServicesListEndpoint, payload)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	response := &paymentServiceListRawResponse{}
+	if err = json.NewDecoder(res.Body).Decode(response); err != nil {
+		return nil, err
+	}
+
+	return response.Result, nil
 }
