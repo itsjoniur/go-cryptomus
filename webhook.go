@@ -3,12 +3,19 @@ package cryptomus
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 )
 
 const (
 	resendWebhookEndpoint      = "/payment/resend"
 	testPaymentWebhookEndpoint = "/test-webhook/payment"
 	testPayoutWebhookEndpoint  = "/test-webhook/payout"
+)
+
+var (
+	ErrInvalidSign = errors.New("invalid signature")
+	ErrMissingSign = errors.New("missing signature")
 )
 
 type WebhookConvert struct {
@@ -19,25 +26,28 @@ type WebhookConvert struct {
 }
 
 type Webhook struct {
-	Type              string         `json:"type"`
-	UUID              string         `json:"uuid"`
-	OrderId           string         `json:"order_id"`
-	Amount            string         `json:"amount"`
-	PaymentAmount     string         `json:"payment_amount"`
-	PaymentAmountUSD  string         `json:"payment_amount_usd"`
-	MerchantAmount    string         `json:"merchant_amount"`
-	Commission        string         `json:"commission"`
-	IsFinal           bool           `json:"is_final"`
-	Status            string         `json:"status"`
-	From              string         `json:"from"`
-	WalletAddressUUID string         `json:"wallet_address_uuid"`
-	Network           string         `json:"network"`
-	Currency          string         `json:"currency"`
-	PayerCurrency     string         `json:"payer_currency"`
-	AdditionalData    string         `json:"additional_data"`
-	Convert           WebhookConvert `json:"convert"`
-	TxId              string         `json:"txid"`
-	Sign              string         `json:"sign"`
+	Type                    string          `json:"type"`
+	UUID                    string          `json:"uuid"`
+	OrderId                 string          `json:"order_id"`
+	Amount                  string          `json:"amount"`
+	PaymentAmount           *string         `json:"payment_amount"`
+	PaymentAmountUSD        string          `json:"payment_amount_usd"`
+	MerchantAmount          *string         `json:"merchant_amount"`
+	Commission              *string         `json:"commission"`
+	IsFinal                 bool            `json:"is_final"`
+	Status                  string          `json:"status"`
+	From                    *string         `json:"from"`
+	WalletAddressUUID       *string         `json:"wallet_address_uuid"`
+	Network                 *string         `json:"network"`
+	Currency                string          `json:"currency"`
+	PayerCurrency           *string         `json:"payer_currency"`
+	PayerAmount             *string         `json:"payer_amount"`
+	PayerAmountExchangeRate *string         `json:"payer_amount_exchange_rate"`
+	AdditionalData          *string         `json:"additional_data"`
+	Convert                 *WebhookConvert `json:"convert,omitempty"`
+	TransferId              *string         `json:"transfer_id"`
+	TxId                    *string         `json:"txid,omitempty"`
+	Sign                    *string         `json:"sign,omitempty"`
 }
 
 type ResendWebhookRequest struct {
@@ -64,32 +74,59 @@ type TestWebhookResponse struct {
 	State  int8     `json:"state"`
 }
 
-func (c *Cryptomus) ParseWebhook(reqBody []byte, verifySign bool) (*Webhook, error) {
-	var apiKey string
-	response := &Webhook{}
+func (w *Webhook) verify(apiKey string) error {
+	if w.Sign == nil {
+		return ErrMissingSign
+	}
 
-	err := json.Unmarshal(reqBody, response)
+	webhookSign := *w.Sign
+	w.Sign = nil
+
+	encoded, err := json.Marshal(w)
+	if err != nil {
+		return fmt.Errorf("marshal webhook: %v", err)
+	}
+
+	r := strings.NewReplacer(
+		"/", `\/`,
+	)
+	modStr := r.Replace(string(encoded))
+
+	expectedSign := signRequest(apiKey, []byte(modStr))
+	if webhookSign != expectedSign {
+		return ErrInvalidSign
+	}
+
+	return nil
+}
+
+func (c *Cryptomus) ParseWebhook(reqBody []byte, verifySign bool) (*Webhook, error) {
+	w := &Webhook{}
+
+	err := json.Unmarshal(reqBody, w)
 	if err != nil {
 		return nil, err
 	}
 
-	switch response.Type {
-	case "payment":
-		apiKey = c.paymentApiKey
-	case "payout":
-		apiKey = c.payoutApiKey
-	default:
-		return nil, errors.New("unknown webhook type")
-	}
-
 	if verifySign {
-		err = c.VerifySign(apiKey, reqBody)
+		var apiKey string
+
+		switch w.Type {
+		case "payment":
+			apiKey = c.paymentApiKey
+		case "payout":
+			apiKey = c.payoutApiKey
+		default:
+			return nil, errors.New("unknown webhook type")
+		}
+
+		err = w.verify(apiKey)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	return response, err
+	return w, err
 }
 
 func (c *Cryptomus) ResendWebhook(resendRequest *ResendWebhookRequest) (bool, error) {

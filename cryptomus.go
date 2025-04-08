@@ -30,7 +30,7 @@ func (c *Cryptomus) fetch(method string, endpoint string, payload any) (*http.Re
 		return nil, err
 	}
 
-	sign := c.signRequest(c.paymentApiKey, body)
+	sign := signRequest(c.paymentApiKey, body)
 	req, err := http.NewRequest(method, APIURL+endpoint, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err

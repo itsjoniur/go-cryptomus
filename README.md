@@ -49,8 +49,25 @@ func main() {
     if err != nil {
         // Handle error
     }
-    
+	
     fmt.Printf("Invoice created: %+v\n", invoice)
+	
+    // Verify webhook
+    var body []byte
+	
+    webhook, err := client.ParseWebhook(body, true)
+    if err != nil { 
+        switch {
+        default:
+            // Handle default error
+        case errors.Is(err, cryptomus.ErrInvalidSign):
+            // Handle invalid sign error
+        case errors.Is(err, cryptomus.ErrMissingSign):
+            // Handle missing sign error
+        }
+    }
+
+    fmt.Printf("Verified webhook: %+v\n", webhook)
 }
 ```
 
